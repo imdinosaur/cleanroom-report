@@ -1,0 +1,442 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>廠辦機電三雄評比</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@600;700&family=Noto+Sans+TC:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: single reading column; verdict first, then evidence (VRIO → valuation → chart) → actions */
+:root {
+  --bg: #f3f6f7;
+  --surface: #ffffff;
+  --ink: #14212b;
+  --muted: #5a6b76;
+  --line: #d8e0e4;
+  --accent: #0f6e8c;
+  --accent-soft: #e1eff3;
+  --up: #c8102e;     /* 台股慣例：紅漲 */
+  --down: #08834a;   /* 綠跌 */
+  --warn: #a8690f;
+  --warn-soft: #fbf1e1;
+  --bar-2: #8fb9c7;
+  --bar-3: #c9d9df;
+  --f-display: "Noto Serif TC", "Songti TC", "PMingLiU", serif;
+  --f-body: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", system-ui, sans-serif;
+  --f-num: "IBM Plex Mono", ui-monospace, "Consolas", monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0d151a; --surface: #142028; --ink: #e5ecf0; --muted: #92a3ad; --line: #25343d;
+    --accent: #5db6d2; --accent-soft: #15313b; --up: #ff5f72; --down: #3cc47e;
+    --warn: #e3ab4d; --warn-soft: #2e2414; --bar-2: #3f7385; --bar-3: #2b4550;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0d151a; --surface: #142028; --ink: #e5ecf0; --muted: #92a3ad; --line: #25343d;
+  --accent: #5db6d2; --accent-soft: #15313b; --up: #ff5f72; --down: #3cc47e;
+  --warn: #e3ab4d; --warn-soft: #2e2414; --bar-2: #3f7385; --bar-3: #2b4550;
+  color-scheme: dark;
+}
+body {
+  background: var(--bg); color: var(--ink);
+  font-family: var(--f-body); font-size: 16px; line-height: 1.7;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 40px 64px;
+}
+.wrap { max-width: 960px; margin: 0 auto; display: grid; gap: 56px; }
+h1, h2, h3 { font-family: var(--f-display); text-wrap: balance; margin: 0; line-height: 1.3; }
+h1 { font-size: clamp(30px, 5vw, 44px); letter-spacing: .02em; }
+h2 { font-size: 26px; }
+h3 { font-size: 19px; }
+p { margin: 0; max-width: 68ch; }
+.num { font-family: var(--f-num); font-variant-numeric: tabular-nums; }
+.eyebrow { font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); font-weight: 700; }
+.muted { color: var(--muted); }
+section { display: grid; gap: 20px; }
+.sec-head { display: grid; gap: 6px; }
+
+/* header */
+header { display: grid; gap: 14px; border-bottom: 2px solid var(--ink); padding-bottom: 24px; }
+.meta { display: flex; flex-wrap: wrap; gap: 8px 24px; font-size: 14px; color: var(--muted); }
+.meta b { color: var(--ink); font-weight: 500; }
+
+/* verdict */
+.verdict { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; display: grid; grid-template-columns: 1.15fr 1fr; overflow: hidden; }
+.verdict-main { padding: 28px; display: grid; gap: 14px; align-content: start; }
+.verdict-main .pick { font-family: var(--f-display); font-size: clamp(34px, 6vw, 48px); line-height: 1.1; }
+.verdict-main .pick small { font-family: var(--f-num); font-size: 18px; color: var(--muted); margin-left: 8px; }
+.plan { background: var(--accent-soft); padding: 28px; display: grid; gap: 12px; align-content: start; }
+.plan dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 8px 16px; }
+.plan dt { font-size: 13px; color: var(--muted); padding-top: 2px; }
+.plan dd { margin: 0; }
+.chip { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 500; padding: 3px 10px; border-radius: 999px; border: 1px solid currentColor; white-space: nowrap; }
+.chip.go { color: var(--accent); }
+.chip.wait { color: var(--warn); }
+
+/* company strip */
+.cos { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.co { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 20px; display: grid; gap: 12px; align-content: start; }
+.co.top { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent) inset; }
+.co-head { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+.co-name { font-family: var(--f-display); font-size: 22px; font-weight: 700; }
+.co-code { font-family: var(--f-num); color: var(--muted); font-size: 14px; }
+.price { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+.price .p { font-family: var(--f-num); font-size: 30px; font-weight: 500; }
+.dn { color: var(--down); font-family: var(--f-num); font-size: 14px; }
+.kv { display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; font-size: 14px; border-top: 1px solid var(--line); padding-top: 12px; }
+.kv span:nth-child(odd) { color: var(--muted); }
+.kv span:nth-child(even) { font-family: var(--f-num); text-align: right; }
+
+/* tables */
+.tbl { overflow-x: auto; background: var(--surface); border: 1px solid var(--line); border-radius: 6px; }
+table { border-collapse: collapse; width: 100%; min-width: 620px; font-size: 14.5px; }
+th, td { padding: 12px 14px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--line); }
+thead th { font-size: 13px; color: var(--muted); font-weight: 500; background: var(--bg); }
+tbody tr:last-child td { border-bottom: 0; }
+td.n, th.n { font-family: var(--f-num); font-variant-numeric: tabular-nums; text-align: right; white-space: nowrap; }
+th[scope="row"] { font-weight: 500; white-space: nowrap; }
+.mark { font-weight: 700; margin-right: 4px; }
+.m-yes { color: var(--accent); }
+.m-mid { color: var(--warn); }
+.m-no { color: var(--up); }
+tr.result td, tr.result th { background: var(--accent-soft); font-weight: 700; }
+.hl { color: var(--up); font-weight: 700; }
+
+/* notice */
+.notice { background: var(--warn-soft); border: 1px solid var(--warn); border-radius: 6px; padding: 20px 22px; display: grid; gap: 10px; }
+.notice h3 { color: var(--warn); font-size: 17px; }
+.notice ul { margin: 0; padding-left: 20px; display: grid; gap: 6px; }
+
+/* pros/cons */
+.pc { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.pc article { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 20px; display: grid; gap: 12px; align-content: start; min-width: 0; }
+.pc h4 { margin: 0; font-size: 13px; letter-spacing: .1em; color: var(--muted); }
+.pc ul { margin: 0; padding-left: 18px; display: grid; gap: 6px; font-size: 14.5px; }
+.pc .plus li::marker { color: var(--accent); content: "＋ "; }
+.pc .minus li::marker { color: var(--up); content: "－ "; }
+
+/* bar charts */
+.charts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.chart { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 20px; display: grid; gap: 14px; align-content: start; min-width: 0; }
+.chart h3 { font-family: var(--f-body); font-size: 15px; font-weight: 700; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 12.5px; color: var(--muted); }
+.legend i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; vertical-align: -1px; }
+.bars { display: grid; gap: 14px; }
+.grp { display: grid; gap: 4px; }
+.grp-name { font-size: 13.5px; font-weight: 500; }
+.row { display: grid; grid-template-columns: minmax(0, 1fr) 52px; align-items: center; gap: 8px; }
+.track { height: 12px; background: var(--bg); border-radius: 2px; position: relative; }
+.fill { height: 100%; border-radius: 2px; }
+.row .v { font-family: var(--f-num); font-size: 12.5px; text-align: right; color: var(--muted); }
+.c1 { background: var(--accent); } .c2 { background: var(--bar-2); } .c3 { background: var(--bar-3); }
+.c-warn { background: var(--warn); }
+.axis { display: flex; justify-content: space-between; font-family: var(--f-num); font-size: 11px; color: var(--muted); margin-right: 60px; border-top: 1px solid var(--line); padding-top: 4px; }
+
+/* actions */
+.steps { display: grid; gap: 12px; }
+.step { display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--line); }
+.step:last-child { border-bottom: 0; }
+.step time { font-family: var(--f-num); font-size: 14px; color: var(--accent); font-weight: 500; }
+footer { font-size: 13px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 20px; display: grid; gap: 6px; }
+
+@media (max-width: 760px) {
+  .verdict { grid-template-columns: 1fr; }
+  .cos, .pc, .charts { grid-template-columns: 1fr; }
+  .step { grid-template-columns: 1fr; gap: 4px; }
+}
+</style>
+
+<div class="wrap">
+
+<header>
+  <span class="eyebrow">產業比較 · 廠辦機電</span>
+  <h1>漢唐、聖暉、亞翔：誰的優勢是真的？</h1>
+  <p class="muted">以 VRIO（資源基礎觀點）拆解三家無塵室統包商的實際優劣勢，再用估值與日 K 線收斂出投資建議。</p>
+  <div class="meta">
+    <span>股價基準 <b class="num">2026/10/20 收盤</b></span>
+    <span>資料來源 <b>三家公司研究報告、10/20 研究更新、日 K 圖</b></span>
+    <span>EPS 口徑 <b>歸屬母公司</b></span>
+  </div>
+</header>
+
+<section aria-labelledby="verdict-h">
+  <h2 id="verdict-h" class="sr-only" hidden>結論</h2>
+  <div class="verdict">
+    <div class="verdict-main">
+      <span class="eyebrow">結論</span>
+      <div class="pick">漢唐<small>2404</small></div>
+      <p>三家中唯一在 VRIO 四項都成立的公司。獲利數字乾淨、日 K 上升結構未破，2026E 本益比約 14 倍，不貴。</p>
+      <div style="display:flex;flex-wrap:wrap;gap:8px">
+        <span class="chip go">漢唐 · 分批布局</span>
+        <span class="chip wait">亞翔 · 等現金流轉正</span>
+        <span class="chip wait">聖暉 · 等股價止跌</span>
+      </div>
+    </div>
+    <div class="plan">
+      <span class="eyebrow">漢唐操作計畫</span>
+      <dl>
+        <dt>進場</dt><dd><span class="num">1,080–1,100</span> 分兩批：現在一批；3Q26 財報確認毛利率 ≥ 22% 再一批</dd>
+        <dt>停損</dt><dd>收盤跌破 <span class="num">1,040</span>（上升趨勢線失守）</dd>
+        <dt>目標一</dt><dd><span class="num">1,140–1,210</span>（60MA、多空線、20MA）</dd>
+        <dt>合理價</dt><dd><span class="num">1,320</span>（2026E EPS 75.4 × 17.5 倍）</dd>
+        <dt>樂觀</dt><dd><span class="num">1,550</span>（2027E EPS 91 × 17 倍）</dd>
+        <dt>警訊</dt><dd>10 月營收低於 80 億元，代表產能天花板提前到來</dd>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<section aria-labelledby="snap-h">
+  <div class="sec-head">
+    <span class="eyebrow">三家快照</span>
+    <h2 id="snap-h">同樣兩週跌 15–18%，體質不同</h2>
+  </div>
+  <div class="cos">
+    <div class="co top">
+      <div class="co-head"><span class="co-name">漢唐</span><span class="co-code">2404 · 上市</span></div>
+      <div class="price"><span class="p">1,090</span><span class="dn">▼10 (−0.91%)</span></div>
+      <div class="kv">
+        <span>市值</span><span>2,077 億</span>
+        <span>2026E 本益比</span><span>13.8–14.5x</span>
+        <span>在手訂單</span><span>1,939 億</span>
+        <span>VRIO</span><span>持續優勢</span>
+        <span>K 線</span><span>多頭結構未破</span>
+      </div>
+    </div>
+    <div class="co">
+      <div class="co-head"><span class="co-name">聖暉*</span><span class="co-code">5536 · 上櫃</span></div>
+      <div class="price"><span class="p">810</span><span class="dn">▼17 (−2.06%)</span></div>
+      <div class="kv">
+        <span>市值</span><span>1,005 億</span>
+        <span>2026E 本益比</span><span>15.8x</span>
+        <span>在手訂單</span><span>660 億</span>
+        <span>VRIO</span><span>暫時優勢</span>
+        <span>K 線</span><span>空頭排列</span>
+      </div>
+    </div>
+    <div class="co">
+      <div class="co-head"><span class="co-name">亞翔</span><span class="co-code">6139 · 上市</span></div>
+      <div class="price"><span class="p">646</span><span class="dn">▼17 (−2.56%)</span></div>
+      <div class="kv">
+        <span>市值</span><span>1,522 億</span>
+        <span>2026E 本益比</span><span>11.4x</span>
+        <span>在手訂單</span><span>4,401 億</span>
+        <span>VRIO</span><span>未兌現</span>
+        <span>K 線</span><span>跌破整理區</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section aria-labelledby="fix-h">
+  <div class="notice">
+    <h3 id="fix-h">先校正報告數據：亞翔、聖暉的 EPS 被高估</h3>
+    <ul>
+      <li>兩份報告的季度 EPS 用「含少數股權的總淨利」計算。例如亞翔 2Q26 表內寫 21.05 元，大事記的正確值是 <b class="num">16.46</b> 元。</li>
+      <li>改用歸屬母公司口徑後，亞翔 TTM EPS 從 64.61 元降到約 <b class="num">50</b> 元；聖暉從 49.87 元降到約 <b class="num">40</b> 元。兩家的 TTM ROE 同樣被高估。</li>
+      <li>同業 P/B 三份報告互相矛盾（漢唐分別寫 13.8x、4.2x、5.5x）。以每股淨值重算：漢唐約 <b class="num">11.5x</b>、聖暉約 <b class="num">4.3x</b>、亞翔約 <b class="num">5.3x</b>。</li>
+      <li>漢唐幾乎沒有少數股權，公告 EPS 就是實際歸屬母公司的獲利，三家裡數字最乾淨。</li>
+    </ul>
+  </div>
+</section>
+
+<section aria-labelledby="vrio-h">
+  <div class="sec-head">
+    <span class="eyebrow">VRIO 分析</span>
+    <h2 id="vrio-h">核心資源能不能變成持續的獲利</h2>
+    <p class="muted">V 有價值、R 稀有、I 難模仿、O 組織能把資源變現。四項都成立才算持續競爭優勢。</p>
+  </div>
+  <div class="tbl">
+    <table>
+      <thead><tr><th></th><th>漢唐 2404</th><th>聖暉 5536</th><th>亞翔 6139</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">核心資源</th>
+          <td>台積電先進製程統包主力，加上美國 Arizona 施工經驗</td>
+          <td>集團垂直整合：朋億（記憶體化學供應約七成市佔）、銳澤二次配、聖暉集成；客戶分散</td>
+          <td>東南亞超大型半導體 EPC 承接能力（新加坡美光二廠、VSMC）</td></tr>
+        <tr><th scope="row">V 有價值</th>
+          <td><span class="mark m-yes">✓</span></td><td><span class="mark m-yes">✓</span></td><td><span class="mark m-yes">✓</span></td></tr>
+        <tr><th scope="row">R 稀有</th>
+          <td><span class="mark m-yes">✓</span>美國晶圓廠統包經驗極少見</td>
+          <td><span class="mark m-mid">△</span>只有化學供應系統這塊稀有</td>
+          <td><span class="mark m-yes">✓</span>在東協幾乎是寡占</td></tr>
+        <tr><th scope="row">I 難模仿</th>
+          <td><span class="mark m-yes">✓</span>美國工會與法規的學習曲線是花錢花時間換來的</td>
+          <td><span class="mark m-mid">△</span>子公司架構同業可以複製</td>
+          <td><span class="mark m-mid">△</span>門檻主要是人力與實績</td></tr>
+        <tr><th scope="row">O 組織變現</th>
+          <td><span class="mark m-yes">✓</span>毛利率 23%+、ROE 約 69%、配息率約 84%、敢拒接非核心客戶</td>
+          <td><span class="mark m-mid">△</span>約 23% 獲利流給少數股東；朋億趕工墊付拉低毛利；需發 CB 籌資</td>
+          <td><span class="mark m-no">✗</span>新加坡駐點約 200 人要扛 2,500 億案；應收暴增、營運現金流連兩季為負；有職安裁罰</td></tr>
+        <tr class="result"><th scope="row">判定</th><td>持續競爭優勢</td><td>暫時競爭優勢</td><td>優勢存在但尚未兌現</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="pc">
+    <article>
+      <h3>漢唐</h3>
+      <h4>優勢</h4>
+      <ul class="plus">
+        <li>毛利率連兩季 23% 以上，TTM ROE 約 69%，EPS 沒有灌水</li>
+        <li>現金 412 億元，現金股利 40 元</li>
+        <li>負債比 82% 偏高，但主要是預收款類負債，代表議價力強</li>
+      </ul>
+      <h4>劣勢</h4>
+      <ul class="minus">
+        <li>前兩大客戶佔營收 90% 以上，台積電建廠時程就是命脈</li>
+        <li>7→9 月營收 99.5→93.9→81.7 億，逐月下滑，人力天花板可能已到</li>
+        <li>管理層常態毛利率指引 20–22%，1Q26 含一次性前期調整</li>
+      </ul>
+    </article>
+    <article>
+      <h3>聖暉*</h3>
+      <h4>優勢</h4>
+      <ul class="plus">
+        <li>三家中唯一營收仍在加速：9 月 55.14 億創新高，年增 41%</li>
+        <li>客戶與地區最分散；負債比 55%、流動比率 161%、預收款 76.6 億</li>
+        <li>2027E EPS 預期成長約 43%</li>
+      </ul>
+      <h4>劣勢</h4>
+      <ul class="minus">
+        <li>在手訂單 660 億只夠約 1.2 年營收，三家最短</li>
+        <li>ROE 約 26%，三家最低</li>
+        <li>少數股權稀釋獲利，2Q26 毛利率被子公司拖累</li>
+      </ul>
+    </article>
+    <article>
+      <h3>亞翔</h3>
+      <h4>優勢</h4>
+      <ul class="plus">
+        <li>在手訂單 4,401 億，約 4 年營收，爆發力最大</li>
+        <li>估值最便宜，2027E 本益比僅 7–9 倍</li>
+        <li>毛利率從 2021 年 5.9% 走升到 2Q26 的 21.3%</li>
+      </ul>
+      <h4>劣勢</h4>
+      <ul class="minus">
+        <li>應收帳款 450 億，約 160 天營收；營運現金流連兩季為負；負債比 76%</li>
+        <li>美光新加坡一案佔在手訂單約 57%</li>
+        <li>9 月營收年增率只剩 6%；外資持股由 32% 降到 18.9%</li>
+      </ul>
+    </article>
+  </div>
+</section>
+
+<section aria-labelledby="val-h">
+  <div class="sec-head">
+    <span class="eyebrow">估值</span>
+    <h2 id="val-h">亞翔最便宜，但便宜是在替現金流風險打折</h2>
+  </div>
+  <div class="tbl">
+    <table>
+      <thead><tr><th>10/20 收盤，母公司 EPS</th><th class="n">漢唐 1,090</th><th class="n">聖暉 810</th><th class="n">亞翔 646</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">TTM 本益比</th><td class="n">16.6x</td><td class="n">約 20x</td><td class="n">約 13x</td></tr>
+        <tr><th scope="row">2026E 本益比</th><td class="n">13.8–14.5x</td><td class="n">15.8x</td><td class="n">11.4x</td></tr>
+        <tr><th scope="row">2027E 本益比</th><td class="n">10.7–12.0x</td><td class="n">11.1x</td><td class="n">7.3–9.1x</td></tr>
+        <tr><th scope="row">P/B</th><td class="n">11.5x</td><td class="n">4.3x</td><td class="n">5.3x</td></tr>
+        <tr><th scope="row">在手訂單 ÷ 年營收</th><td class="n">約 1.8 年</td><td class="n">約 1.2 年</td><td class="n">約 3.9 年</td></tr>
+        <tr><th scope="row">應收帳款 ÷ 單季營收</th><td class="n">0.77x</td><td class="n">1.17x</td><td class="n hl">1.76x</td></tr>
+        <tr><th scope="row">現金殖利率</th><td class="n">3.7%</td><td class="n">—</td><td class="n">3.6%</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="charts">
+    <div class="chart">
+      <h3>本益比（倍）</h3>
+      <div class="legend"><span><i class="c1"></i>TTM</span><span><i class="c2"></i>2026E</span><span><i class="c3"></i>2027E</span></div>
+      <div class="bars">
+        <div class="grp"><span class="grp-name">漢唐</span>
+          <div class="row"><div class="track"><div class="fill c1" style="width:75.5%"></div></div><span class="v">16.6</span></div>
+          <div class="row"><div class="track"><div class="fill c2" style="width:64.1%"></div></div><span class="v">14.1</span></div>
+          <div class="row"><div class="track"><div class="fill c3" style="width:51.8%"></div></div><span class="v">11.4</span></div>
+        </div>
+        <div class="grp"><span class="grp-name">聖暉*</span>
+          <div class="row"><div class="track"><div class="fill c1" style="width:90.9%"></div></div><span class="v">20.0</span></div>
+          <div class="row"><div class="track"><div class="fill c2" style="width:71.8%"></div></div><span class="v">15.8</span></div>
+          <div class="row"><div class="track"><div class="fill c3" style="width:50.5%"></div></div><span class="v">11.1</span></div>
+        </div>
+        <div class="grp"><span class="grp-name">亞翔</span>
+          <div class="row"><div class="track"><div class="fill c1" style="width:59.1%"></div></div><span class="v">13.0</span></div>
+          <div class="row"><div class="track"><div class="fill c2" style="width:51.8%"></div></div><span class="v">11.4</span></div>
+          <div class="row"><div class="track"><div class="fill c3" style="width:37.3%"></div></div><span class="v">8.2</span></div>
+        </div>
+      </div>
+      <div class="axis"><span>0</span><span>11</span><span>22</span></div>
+      <p class="muted" style="font-size:12.5px">區間值取中點：漢唐 2026E 13.8–14.5、2027E 10.7–12.0；亞翔 2027E 7.3–9.1。</p>
+    </div>
+
+    <div class="chart">
+      <h3>訂單能見度 vs. 收款壓力</h3>
+      <div class="legend"><span><i class="c1"></i>在手訂單 ÷ 年營收（年）</span><span><i class="c-warn"></i>應收 ÷ 單季營收（倍）</span></div>
+      <div class="bars">
+        <div class="grp"><span class="grp-name">漢唐</span>
+          <div class="row"><div class="track"><div class="fill c1" style="width:45%"></div></div><span class="v">1.8 年</span></div>
+          <div class="row"><div class="track"><div class="fill c-warn" style="width:19.3%"></div></div><span class="v">0.77x</span></div>
+        </div>
+        <div class="grp"><span class="grp-name">聖暉*</span>
+          <div class="row"><div class="track"><div class="fill c1" style="width:30%"></div></div><span class="v">1.2 年</span></div>
+          <div class="row"><div class="track"><div class="fill c-warn" style="width:29.3%"></div></div><span class="v">1.17x</span></div>
+        </div>
+        <div class="grp"><span class="grp-name">亞翔</span>
+          <div class="row"><div class="track"><div class="fill c1" style="width:97.5%"></div></div><span class="v">3.9 年</span></div>
+          <div class="row"><div class="track"><div class="fill c-warn" style="width:44%"></div></div><span class="v">1.76x</span></div>
+        </div>
+      </div>
+      <div class="axis"><span>0</span><span>2</span><span>4</span></div>
+      <p class="muted" style="font-size:12.5px">兩項共用 0–4 刻度。亞翔訂單最多，但收款壓力也最大：約 160 天營收掛在應收帳款上。</p>
+    </div>
+  </div>
+</section>
+
+<section aria-labelledby="k-h">
+  <div class="sec-head">
+    <span class="eyebrow">日 K 線</span>
+    <h2 id="k-h">三檔都超賣，差在趨勢結構</h2>
+    <p class="muted">近兩週族群同步回檔約 15–18%，KD 皆低於 15、6 日 RSI 皆低於 25。</p>
+  </div>
+  <div class="tbl">
+    <table>
+      <thead><tr><th></th><th>結構</th><th>籌碼</th><th>判讀</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">漢唐</th>
+          <td>795 以來低點墊高，現回測上升趨勢線約 1,080；20MA 1,212 仍上揚，60MA 1,125</td>
+          <td>投信持股增至 9%；外資 37% 持穩</td>
+          <td><b>最強</b>，多頭結構還在</td></tr>
+        <tr><th scope="row">聖暉*</th>
+          <td>高點 1,475 → 約 1,150 → 約 1,100 逐次降低，跌破 830–850 平台；均線全部下彎</td>
+          <td>融券對融資約 2.7 倍；主力累計賣超</td>
+          <td><b>最弱</b>，空頭排列</td></tr>
+        <tr><th scope="row">亞翔</th>
+          <td>跌破 700–760 整理區，乖離 −12%；需守 620–640</td>
+          <td>主力、外資持續賣超；融券餘額約 1.46 萬張（以借券為主）</td>
+          <td><b>偏弱</b>，籌碼最差</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section aria-labelledby="act-h">
+  <div class="sec-head">
+    <span class="eyebrow">接下來看什麼</span>
+    <h2 id="act-h">觀察節點與轉向條件</h2>
+  </div>
+  <div class="steps">
+    <div class="step"><time>10/22</time><div><b>聖暉集成線上法說會</b>：中國記憶體、PCB 新單的轉化速度。</div></div>
+    <div class="step"><time>11 月上旬</time><div><b>10 月營收</b>：漢唐是否止住逐月下滑（警戒線 80 億）；亞翔年增率是否續降。</div></div>
+    <div class="step"><time>11 月中旬</time><div><b>3Q26 財報</b>：漢唐毛利率守 22% → 加碼第二批；亞翔應收回收、營運現金流轉正 → 可小部位布局；聖暉毛利率回到 22% 以上且股價不再創新低 → 列入考慮。</div></div>
+    <div class="step"><time>2H26–1H27</time><div><b>台積電美國先進封裝廠與 P3 發包</b>：漢唐在手訂單能否突破 2,000 億的關鍵催化劑。</div></div>
+  </div>
+</section>
+
+<footer>
+  <p>本頁根據使用者提供的研究報告、10/20 研究更新與日 K 圖整理，不構成投資建議。報告本身存在數據口徑誤差，下單前請以公開資訊觀測站的 3Q26 實際財報核對。</p>
+  <p>價格顏色依台股慣例：紅漲綠跌。</p>
+</footer>
+
+</div>
+
+</body></html>
